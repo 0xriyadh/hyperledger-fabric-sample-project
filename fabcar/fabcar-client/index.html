@@ -75,13 +75,18 @@
         </div>
 
         <script>
-            // CREATING NEW CAR
+            // CREATING NEW COMPANY
             const createForm = document.getElementById("createForm");
 
             // THIS IS AN EVENT LISTENER WHICH WILL RUN WHEN WE CLICK THE CREATE BUTTON
             createForm.addEventListener("submit", function (event) {
                 event.preventDefault();
                 const bodyParam = new URLSearchParams(new FormData(createForm));
+
+                // Set initial values for cashInflow, cashOutFlow, and companyReputation
+                bodyParam.set("cashInflow", "0");
+                bodyParam.set("cashOutFlow", "0");
+                bodyParam.set("companyReputation", "");
 
                 //CALLING CREATE API
                 fetch("http://localhost:3000/create", {
