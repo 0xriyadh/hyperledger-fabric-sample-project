@@ -139,6 +139,42 @@ class FabCar extends Contract {
         return carAsBytes.toString();
     }
 
+    async queryCompany(ctx, query) {
+        const startKey = "";
+        const endKey = "";
+        const allResults = [];
+        for await (const { key, value } of ctx.stub.getStateByRange(
+            startKey,
+            endKey
+        )) {
+            const strValue = Buffer.from(value).toString("utf8");
+            let record;
+            try {
+                record = JSON.parse(strValue);
+                // Check if the docType is 'company'
+                if (record.docType !== "company") {
+                    continue;
+                }
+                // Check if the company matches the search criteria
+                if (
+                    key === query ||
+                    record.name === query ||
+                    record.companyReputation === query
+                ) {
+                    allResults.push({ Key: key, Record: record });
+                }
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+        }
+        if (allResults.length === 0) {
+            throw new Error(`${query} does not exist`);
+        }
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+
     async createCar(ctx, carNumber, make, model, color, owner) {
         console.info("============= START : Create Car ===========");
 

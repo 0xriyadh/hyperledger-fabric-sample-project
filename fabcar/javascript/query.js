@@ -61,6 +61,7 @@ async function main(queryData) {
                 "queryCompany",
                 `${queryData.key}`
             );
+            console.log(`Yoyoyo ${queryData.key}`);
             console.log(
                 `QUERY Transaction has been evaluated, result is: ${queryResult.toString()}`
             );
@@ -79,7 +80,7 @@ async function main(queryData) {
         return result;
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
-        process.exit(1);
+        throw error;
     }
 }
 

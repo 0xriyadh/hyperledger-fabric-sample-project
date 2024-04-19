@@ -62,19 +62,19 @@ app.get("/get-company", function (req, res) {
             const parsedData = JSON.parse(result);
             let companyList;
             console.log({ parsedData });
-            // // if user search company
-            // if(  req.query.key ){
-            //     companyList = [
-            //         {
-            //             Key: req.query.key,
-            //             Record: {
-            //                 ...parsedData
-            //             }
-            //         }
-            //     ]
-            //     res.send( companyList )
-            //     return
-            // }
+            // if user search company
+            if (req.query.key) {
+                companyList = [
+                    {
+                        Key: req.query.key,
+                        Record: {
+                            ...parsedData,
+                        },
+                    },
+                ];
+                res.send(companyList);
+                return;
+            }
 
             companyList = parsedData;
             res.send(companyList);
