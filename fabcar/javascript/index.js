@@ -60,28 +60,12 @@ app.get("/get-company", function (req, res) {
         .main(req.query)
         .then((result) => {
             const parsedData = JSON.parse(result);
-            let companyList;
             console.log({ parsedData });
-            // if user search company
-            if (req.query.key) {
-                companyList = [
-                    {
-                        Key: req.query.key,
-                        Record: {
-                            ...parsedData,
-                        },
-                    },
-                ];
-                res.send(companyList);
-                return;
-            }
-
-            companyList = parsedData;
-            res.send(companyList);
+            res.send(parsedData);
         })
         .catch((err) => {
             console.error({ err });
-            res.send("FAILED TO GET DATA!");
+            res.status(500).send("FAILED TO GET DATA!");
         });
 });
 
