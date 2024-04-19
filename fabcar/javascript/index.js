@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const query = require("./query");
 const createCar = require("./createCar");
+const createCompany = require("./createCompany");
 const changeOwner = require("./changeOwner");
 const bodyParser = require("body-parser");
 
@@ -71,7 +72,7 @@ app.get("/get-company", function (req, res) {
 
 // create a new car
 app.post("/create", function (req, res) {
-    createCar
+    createCompany
         .main(req.body)
         .then((result) => {
             res.send({ message: "Created successfully" });

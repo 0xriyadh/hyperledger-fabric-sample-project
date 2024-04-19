@@ -22,32 +22,33 @@
 
         <div class="text-center form-container">
             <h3>Create Car</h3>
-            <form id="createForm" action="" name="createCar">
+            <form class="form" id="createForm" action="" name="createCompany">
                 <div>
-                    <label for="">Car ID/Key</label>
+                    <label for="">ID/Key</label>
                     <input name="key" />
                 </div>
 
                 <div>
-                    <label for="">Made In</label>
-                    <input name="make" />
+                    <label for="">Name</label>
+                    <input name="name" />
                 </div>
 
                 <div>
-                    <label for="">Model</label>
-                    <input name="model" />
+                    <label for="">Company Type</label>
+                    <select name="companyType">
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                        <option value="ngo">NGO</option>
+                    </select>
                 </div>
-
                 <div>
-                    <label for="">Color</label>
-                    <input name="color" />
+                    <label for="">Employee Count</label>
+                    <input name="employeeCount" type="number" />
                 </div>
-
                 <div>
-                    <label for="">Owner</label>
-                    <input name="owner" />
+                    <label for="">Country of Origin</label>
+                    <input name="countryOfOrigin" />
                 </div>
-
                 <div>
                     <button type="submit">Create</button>
                 </div>
@@ -88,6 +89,7 @@
                     body: bodyParam,
                 })
                     .then((res) => {
+                        getAllCompanies();
                         return res.json();
                     })
                     .then((parsedRes) => {
@@ -120,7 +122,7 @@
                     })
                     .then((parsedRes) => {
                         alert(parsedRes.message);
-                        getAll();
+                        getAllCompanies();
                     })
                     .catch((err) => {
                         alert(err.message);
@@ -186,7 +188,7 @@
                     })
                     .then((parsedRes) => {
                         let companyMarkup = "";
-                        console.log("parseee",parsedRes);
+                        console.log("parseee", parsedRes);
                         parsedRes.forEach((item) => {
                             companyMarkup =
                                 companyMarkup +
