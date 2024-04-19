@@ -82,6 +82,51 @@ class FabCar extends Contract {
             );
             console.info("Added <--> ", cars[i]);
         }
+
+        const companies = [
+            // {
+            //     color: "blue",
+            //     make: "Toyota",
+            //     model: "Prius",
+            //     owner: "Tomoko",
+            // },
+            {
+                name: "BRAC",
+                companyType: "ngo",
+                cashOutFlow: 0,
+                cashInFlow: 0,
+                employeeCount: 7000,
+                countryOfOrigin: "Bangladesh",
+                companyReputation: "good",
+            },
+            {
+                name: "Bashundhara Group",
+                companyType: "private",
+                cashOutFlow: 0,
+                cashInFlow: 0,
+                employeeCount: 12000,
+                countryOfOrigin: "Bangladesh",
+                companyReputation: "good",
+            },
+            {
+                name: "PRAN RFL Group",
+                companyType: "public",
+                cashOutFlow: 0,
+                cashInFlow: 0,
+                employeeCount: 8000,
+                countryOfOrigin: "Bangladesh",
+                companyReputation: "good",
+            },
+        ];
+
+        for (let i = 0; i < companies.length; i++) {
+            companies[i].docType = "company";
+            await ctx.stub.putState(
+                "COM " + i,
+                Buffer.from(JSON.stringify(companies[i]))
+            );
+            console.info("Added <--> ", companies[i]);
+        }
         console.info("============= END : Initialize Ledger ===========");
     }
 
@@ -109,6 +154,37 @@ class FabCar extends Contract {
         console.info("============= END : Create Car ===========");
     }
 
+    async createCompany(
+        ctx,
+        companyId,
+        name,
+        companyType,
+        cashOutFlow,
+        cashInFlow,
+        employeeCount,
+        countryOfOrigin,
+        companyReputation
+    ) {
+        console.info("============= START : Create Company ===========");
+
+        const company = {
+            name,
+            docType: "company",
+            companyType,
+            cashOutFlow,
+            cashInFlow,
+            employeeCount,
+            countryOfOrigin,
+            companyReputation,
+        };
+
+        await ctx.stub.putState(
+            companyId,
+            Buffer.from(JSON.stringify(company))
+        );
+        console.info("============= END : Create Company ===========");
+    }
+
     async queryAllCars(ctx) {
         const startKey = "";
         const endKey = "";
@@ -121,6 +197,32 @@ class FabCar extends Contract {
             let record;
             try {
                 record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            allResults.push({ Key: key, Record: record });
+        }
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+
+    async queryAllCompanies(ctx) {
+        const startKey = "";
+        const endKey = "";
+        const allResults = [];
+        for await (const { key, value } of ctx.stub.getStateByRange(
+            startKey,
+            endKey
+        )) {
+            const strValue = Buffer.from(value).toString("utf8");
+            let record;
+            try {
+                record = JSON.parse(strValue);
+                // Check if the docType is 'company'
+                if (record.docType !== "company") {
+                    continue;
+                }
             } catch (err) {
                 console.log(err);
                 record = strValue;
