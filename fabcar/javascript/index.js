@@ -1,10 +1,10 @@
-/*
- * Module dependencies
- */
+/* eslint-disable quotes */
+
+"use strict";
+
 const express = require("express");
 const cors = require("cors");
 const query = require("./query");
-const createCar = require("./createCar");
 const createCompany = require("./createCompany");
 const changeOwner = require("./changeOwner");
 const bodyParser = require("body-parser");
