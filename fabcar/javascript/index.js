@@ -8,6 +8,8 @@ const query = require("./query");
 const createCompany = require("./createCompany");
 const updateCompany = require("./updateCompany");
 const bodyParser = require("body-parser");
+const updateCashOutFlowAndReputation = require("./updateCashOutFlowAndReputation");
+const updateCompanyFinancials = require("./updateCompanyFinancials");
 
 const app = express();
 
@@ -117,6 +119,64 @@ app.post("/update", function (req, res) {
             newCompanyType,
             newEmployeeCount,
             newCountryOfOrigin,
+        })
+        .then((result) => {
+            res.send({ message: "Updated successfully" });
+        })
+        .catch((err) => {
+            console.error({ err });
+            res.status(500).send("FAILED TO UPDATE DATA!");
+        });
+});
+
+// update cash outflow and reputation
+app.post("/updateCashOutFlowAndReputation", function (req, res) {
+    const {
+        companyId,
+        newPredeterminedCashOutFlow,
+        newCompanyReputation,
+        adminNID,
+    } = req.body;
+
+    if (
+        !companyId ||
+        !newCompanyReputation ||
+        !adminNID ||
+        (newCompanyReputation === "poor" && !newPredeterminedCashOutFlow)
+    ) {
+        return res.status(400).send({ message: "Missing required fields" });
+    }
+
+    updateCashOutFlowAndReputation
+        .main({
+            companyId,
+            newPredeterminedCashOutFlow,
+            newCompanyReputation,
+            adminNID,
+        })
+        .then((result) => {
+            res.send({ message: "Updated successfully" });
+        })
+        .catch((err) => {
+            console.error({ err });
+            res.status(500).send("FAILED TO UPDATE DATA!");
+        });
+});
+
+// update company financials
+app.post("/updateCompanyFinancials", function (req, res) {
+    const { companyId, newCashInFlow, newCashOutFlow, adminNID } = req.body;
+
+    if (!companyId || !newCashInFlow || !newCashOutFlow || !adminNID) {
+        return res.status(400).send({ message: "Missing required fields" });
+    }
+
+    updateCompanyFinancials
+        .main({
+            companyId,
+            newCashInFlow,
+            newCashOutFlow,
+            adminNID,
         })
         .then((result) => {
             res.send({ message: "Updated successfully" });

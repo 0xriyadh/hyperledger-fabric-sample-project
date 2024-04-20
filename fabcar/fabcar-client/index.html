@@ -104,6 +104,80 @@
             </form>
         </div>
 
+        <div class="text-center form-container">
+            <h3>Update Cash Outflow and Reputation</h3>
+            <form
+                class="form"
+                id="updateCashOutFlowAndReputationForm"
+                action=""
+                name="updateCashOutFlowAndReputation"
+            >
+                <div>
+                    <label for="">ID/Key</label>
+                    <input name="companyId" />
+                </div>
+
+                <div>
+                    <label for="">New Predetermined Cash Outflow</label>
+                    <input name="newPredeterminedCashOutFlow" type="number" />
+                </div>
+
+                <div>
+                    <label for="">New Company Reputation</label>
+                    <select name="newCompanyReputation">
+                        <option value="fair">Fair</option>
+                        <option value="good">Good</option>
+                        <option value="excellent">Excellent</option>
+                        <option value="poor">Poor</option>
+                        <option value="banned">Banned</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="">Admin NID</label>
+                    <input name="adminNID" />
+                </div>
+
+                <div>
+                    <button type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="text-center form-container">
+            <h3>Update Company Financials</h3>
+            <form
+                class="form"
+                id="updateCompanyFinancialsForm"
+                action=""
+                name="updateCompanyFinancials"
+            >
+                <div>
+                    <label for="">ID/Key</label>
+                    <input name="companyId" />
+                </div>
+
+                <div>
+                    <label for="">New Cash Inflow</label>
+                    <input name="newCashInFlow" type="number" />
+                </div>
+
+                <div>
+                    <label for="">New Cash Outflow</label>
+                    <input name="newCashOutFlow" type="number" />
+                </div>
+
+                <div>
+                    <label for="">Admin NID</label>
+                    <input name="adminNID" />
+                </div>
+
+                <div>
+                    <button type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+
         <script>
             // CREATING NEW COMPANY
             const createForm = document.getElementById("createForm");
@@ -143,7 +217,7 @@
                     });
             });
 
-            // UPDATE: CHANGING CAR OWNER
+            // UPDATE: UPDATING COMPANY
             const updateForm = document.getElementById("updateForm");
 
             // THIS IS AN EVENT LISTENER WHICH WILL RUN WHEN WE CLICK THE UPDATE BUTTON
@@ -193,6 +267,122 @@
                         console.error({ err });
                     });
             });
+
+            // UPDATE: UPDATING CASH OUTFLOW AND REPUTATION
+            const updateCashOutFlowAndReputationForm = document.getElementById(
+                "updateCashOutFlowAndReputationForm"
+            );
+
+            updateCashOutFlowAndReputationForm.addEventListener(
+                "submit",
+                function (event) {
+                    event.preventDefault();
+                    const bodyParam = new URLSearchParams(
+                        new FormData(updateCashOutFlowAndReputationForm)
+                    );
+
+                    // Check if all required fields are filled
+                    if (
+                        !bodyParam.has("companyId") ||
+                        !bodyParam.has("newCompanyReputation") ||
+                        !bodyParam.has("adminNID")
+                    ) {
+                        alert("Please fill all required fields");
+                        console.log("bodyParam", bodyParam);
+                        return;
+                    }
+
+                    // Check if newPredeterminedCashOutFlow is provided when newCompanyReputation is poor
+                    if (
+                        bodyParam.get("newCompanyReputation") === "poor" &&
+                        !bodyParam.has("newPredeterminedCashOutFlow")
+                    ) {
+                        alert(
+                            "Please provide a new predetermined cash outflow for poor reputation"
+                        );
+                        console.log("bodyParam", bodyParam);
+                        return;
+                    }
+
+                    console.log("bodyParam", bodyParam);
+
+                    //CALLING UPDATE API
+                    fetch(
+                        "http://localhost:3000/updateCashOutFlowAndReputation",
+                        {
+                            method: "POST",
+                            body: bodyParam,
+                        }
+                    )
+                        .then((res) => {
+                            if (res.status !== 200) {
+                                alert("Unable to update");
+                                console.error({ res });
+                                return;
+                            }
+                            return res.json();
+                        })
+                        .then((parsedRes) => {
+                            alert(parsedRes.message);
+                            getAllCompanies();
+                        })
+                        .catch((err) => {
+                            alert(err.message);
+                            console.error({ err });
+                        });
+                }
+            );
+
+            // UPDATE: UPDATING COMPANY FINANCIALS
+            const updateCompanyFinancialsForm = document.getElementById(
+                "updateCompanyFinancialsForm"
+            );
+
+            updateCompanyFinancialsForm.addEventListener(
+                "submit",
+                function (event) {
+                    event.preventDefault();
+                    const bodyParam = new URLSearchParams(
+                        new FormData(updateCompanyFinancialsForm)
+                    );
+
+                    // Check if all required fields are filled
+                    if (
+                        !bodyParam.has("companyId") ||
+                        !bodyParam.has("newCashInFlow") ||
+                        !bodyParam.has("newCashOutFlow") ||
+                        !bodyParam.has("adminNID")
+                    ) {
+                        alert("Please fill all required fields");
+                        console.log("bodyParam", bodyParam);
+                        return;
+                    }
+
+                    console.log("bodyParam", bodyParam);
+
+                    //CALLING UPDATE API
+                    fetch("http://localhost:3000/updateCompanyFinancials", {
+                        method: "POST",
+                        body: bodyParam,
+                    })
+                        .then((res) => {
+                            if (res.status !== 200) {
+                                alert("Unable to update");
+                                console.error({ res });
+                                return;
+                            }
+                            return res.json();
+                        })
+                        .then((parsedRes) => {
+                            alert(parsedRes.message);
+                            getAllCompanies();
+                        })
+                        .catch((err) => {
+                            alert(err.message);
+                            console.error({ err });
+                        });
+                }
+            );
 
             //SEARCH DATA
             function search() {

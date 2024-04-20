@@ -1,9 +1,4 @@
 /* eslint-disable quotes */
-/*
- * Copyright IBM Corp. All Rights Reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
 "use strict";
 
 const { Gateway, Wallets } = require("fabric-network");
@@ -56,32 +51,33 @@ async function main(params) {
 
         // gathering payload data
         const companyId = params.companyId;
-        const newName = params.newName;
-        const newCompanyType = params.newCompanyType;
-        const newEmployeeCount = params.newEmployeeCount;
-        const newCountryOfOrigin = params.newCountryOfOrigin;
+        const newCashInFlow = params.newCashInFlow;
+        const newCashOutFlow = params.newCashOutFlow;
+        const adminNID = params.adminNID;
 
-        console.log("Updating company information...");
+        console.log("Updating company financials...");
 
         // Submit the specified transaction.
-        // updateCompany transaction - requires 5 arguments
+        // updateCompanyFinancials transaction - requires 4 arguments
         await contract.submitTransaction(
-            "updateCompany",
+            "updateCompanyFinancials",
             `${companyId}`,
-            `${newName}`,
-            `${newCompanyType}`,
-            `${newEmployeeCount}`,
-            `${newCountryOfOrigin}`
+            `${newCashInFlow}`,
+            `${newCashOutFlow}`,
+            `${adminNID}`
         );
-        console.log("Update Company Transaction has been submitted");
+        console.log("Update Company Financials Transaction has been submitted");
 
         // Disconnect from the gateway.
         await gateway.disconnect();
     } catch (error) {
-        console.error(`Failed to update company transaction: ${error}`);
-        process.exit(1);
+        console.error(
+            `Failed to update company financials transaction: ${error}`
+        );
+        throw new Error(
+            `Failed to update company financials transaction: ${error}`
+        );
     }
 }
 
-// main();
 module.exports = { main };

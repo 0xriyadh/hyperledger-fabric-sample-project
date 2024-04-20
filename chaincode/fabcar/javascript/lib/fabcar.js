@@ -171,7 +171,7 @@ class FabCar extends Contract {
         const company = JSON.parse(companyAsBytes.toString());
 
         // Check if the company is banned
-        if (company.status === "banned") {
+        if (company.companyReputation === "banned") {
             throw new Error(
                 `Company with ID ${companyId} is banned and cannot be updated`
             );
