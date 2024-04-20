@@ -60,10 +60,11 @@ async function main(params) {
         const name = params.name;
         const companyType = params.companyType;
         const cashOutFlow = params.cashOutFlow;
-        const cashInflow = params.cashInflow;
+        const cashInFlow = params.cashInFlow;
         const employeeCount = params.employeeCount;
         const countryOfOrigin = params.countryOfOrigin;
         const companyReputation = params.companyReputation;
+        const admins = params.admins;
 
         // Submit the specified transaction.
         // createCompany transaction - requires 8 arguments
@@ -73,10 +74,11 @@ async function main(params) {
             `${name}`,
             `${companyType}`,
             `${cashOutFlow}`,
-            `${cashInflow}`,
+            `${cashInFlow}`,
             `${employeeCount}`,
             `${countryOfOrigin}`,
-            `${companyReputation}`
+            `${companyReputation}`,
+            `${admins}` // new line
         );
         console.log("Transaction has been submitted");
 

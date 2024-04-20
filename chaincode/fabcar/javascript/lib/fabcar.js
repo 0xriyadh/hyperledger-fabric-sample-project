@@ -14,12 +14,6 @@ class FabCar extends Contract {
         console.info("============= START : Initialize Ledger ===========");
 
         const companies = [
-            // {
-            //     color: "blue",
-            //     make: "Toyota",
-            //     model: "Prius",
-            //     owner: "Tomoko",
-            // },
             {
                 name: "BRAC",
                 companyType: "ngo",
@@ -28,6 +22,7 @@ class FabCar extends Contract {
                 employeeCount: 7000,
                 countryOfOrigin: "Bangladesh",
                 companyReputation: "good",
+                admins: ["283723600812", "381397466823", "594012940575"],
             },
             {
                 name: "Bashundhara Group",
@@ -37,6 +32,7 @@ class FabCar extends Contract {
                 employeeCount: 12000,
                 countryOfOrigin: "Bangladesh",
                 companyReputation: "good",
+                admins: ["055548014182", "879391587015", "996866466160"],
             },
             {
                 name: "PRAN RFL Group",
@@ -46,6 +42,7 @@ class FabCar extends Contract {
                 employeeCount: 8000,
                 countryOfOrigin: "Bangladesh",
                 companyReputation: "good",
+                admins: ["436240574770", "412680028559", "772666348195"],
             },
         ];
 
@@ -106,7 +103,8 @@ class FabCar extends Contract {
         cashInFlow,
         employeeCount,
         countryOfOrigin,
-        companyReputation
+        companyReputation,
+        admins // new parameter
     ) {
         console.info("============= START : Create Company ===========");
 
@@ -119,6 +117,7 @@ class FabCar extends Contract {
             employeeCount,
             countryOfOrigin,
             companyReputation,
+            admins: JSON.parse(admins), // parse the admins string into an array
         };
 
         await ctx.stub.putState(

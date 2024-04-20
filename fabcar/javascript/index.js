@@ -41,14 +41,50 @@ app.get("/get-company", function (req, res) {
 
 // create a new company
 app.post("/create", function (req, res) {
+    const {
+        key,
+        name,
+        companyType,
+        cashOutFlow,
+        cashInFlow,
+        employeeCount,
+        countryOfOrigin,
+        companyReputation,
+        admins,
+    } = req.body;
+    console.log(req.body);
+    if (
+        !key ||
+        !name ||
+        !companyType ||
+        !cashOutFlow ||
+        !cashInFlow ||
+        !employeeCount ||
+        !countryOfOrigin ||
+        // !companyReputation ||
+        !admins
+    ) {
+        return res.status(400).send({ message: "Missing required fields" });
+    }
+
     createCompany
-        .main(req.body)
+        .main({
+            key,
+            name,
+            companyType,
+            cashOutFlow,
+            cashInFlow,
+            employeeCount,
+            countryOfOrigin,
+            companyReputation,
+            admins,
+        })
         .then((result) => {
             res.send({ message: "Created successfully" });
         })
         .catch((err) => {
             console.error({ err });
-            res.send("FAILED TO LOAD DATA!");
+            res.status(500).send("FAILED TO LOAD DATA!");
         });
 });
 

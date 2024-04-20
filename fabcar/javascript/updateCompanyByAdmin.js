@@ -79,7 +79,7 @@ async function main(params) {
         await gateway.disconnect();
     } catch (error) {
         console.error(`Failed to update company transaction: ${error}`);
-        throw new Error(`Failed to update company transaction: ${error}`);
+        process.exit(1);
     }
 }
 

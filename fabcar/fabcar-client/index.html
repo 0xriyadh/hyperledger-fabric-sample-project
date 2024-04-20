@@ -50,6 +50,20 @@
                     <input name="countryOfOrigin" />
                 </div>
                 <div>
+                    <label for="">Admin 1 NID</label>
+                    <input name="admin1" />
+                </div>
+
+                <div>
+                    <label for="">Admin 2 NID</label>
+                    <input name="admin2" />
+                </div>
+
+                <div>
+                    <label for="">Admin 3 NID</label>
+                    <input name="admin3" />
+                </div>
+                <div>
                     <button type="submit">Create</button>
                 </div>
             </form>
@@ -99,10 +113,18 @@
                 event.preventDefault();
                 const bodyParam = new URLSearchParams(new FormData(createForm));
 
-                // Set initial values for cashInflow, cashOutFlow, and companyReputation
-                bodyParam.set("cashInflow", "0");
+                // Set initial values for cashInFlow, cashOutFlow, and companyReputation
+                bodyParam.set("cashInFlow", "0");
                 bodyParam.set("cashOutFlow", "0");
                 bodyParam.set("companyReputation", "");
+
+                // Get admin NIDs from the form and add them to the bodyParam
+                const admins = [
+                    bodyParam.get("admin1"),
+                    bodyParam.get("admin2"),
+                    bodyParam.get("admin3"),
+                ];
+                bodyParam.set("admins", JSON.stringify(admins));
 
                 //CALLING CREATE API
                 fetch("http://localhost:3000/create", {
@@ -129,8 +151,8 @@
                 event.preventDefault();
                 const bodyParam = new URLSearchParams(new FormData(updateForm));
 
-                // Ensure cashInflow, cashOutFlow, and companyReputation are not updated
-                bodyParam.delete("cashInflow");
+                // Ensure cashInFlow, cashOutFlow, and companyReputation are not updated
+                bodyParam.delete("cashInFlow");
                 bodyParam.delete("cashOutFlow");
                 bodyParam.delete("companyReputation");
 
