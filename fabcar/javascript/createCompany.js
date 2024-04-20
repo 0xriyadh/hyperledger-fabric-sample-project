@@ -86,7 +86,7 @@ async function main(params) {
         await gateway.disconnect();
     } catch (error) {
         console.error(`Failed to create transaction: ${error}`);
-        process.exit(1);
+        throw new Error(`Failed to create transaction: ${error}`);
     }
 }
 

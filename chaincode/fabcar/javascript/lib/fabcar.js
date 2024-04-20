@@ -108,6 +108,12 @@ class FabCar extends Contract {
     ) {
         console.info("============= START : Create Company ===========");
 
+        // Check if a company with the given ID already exists
+        const companyExists = await ctx.stub.getState(companyId);
+        if (companyExists && companyExists.length > 0) {
+            throw new Error(`A company with ID ${companyId} already exists`);
+        }
+
         const company = {
             name,
             docType: "company",
