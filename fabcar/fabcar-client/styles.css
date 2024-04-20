@@ -26,7 +26,7 @@ div input {
 
 .company-item {
     width: 250px;
-    border: 1px solid black;
+    border: 1px solid #007bff;
     padding: 5px;
     margin: 5px;
     border-radius: 5px;
