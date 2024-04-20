@@ -1,7 +1,10 @@
 # Hyperledger Fabric Sample Project (Bangladesh Business Association Register)
+
+This project is part of the CSE446 (Blockchain & Cryptocurrencies) LAB course taken in the Spring 2024 semester. It is based on a sample project of Hyperledger Fabric.
+
 <img width="1420" alt="image" src="https://github.com/mahadihassanriyadh/hyperledger-fabric-sample-project/assets/77486566/974cdfc9-c70e-4cf4-a9da-29508f6e9066">
 
-To get started, please follow the instructions below.
+### To get started, please follow the instructions below.
 1. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/) and install it.
 2. Run Docker Desktop.
 3. Clone this repository.
