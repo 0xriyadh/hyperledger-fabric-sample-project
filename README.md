@@ -12,4 +12,5 @@ cd hyperledger-fabric-sample-project
 ```bash
 make setup
 ```
-5. Go to 
+5. Install [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension, if you haven't already.
+6. Open the file `./fabcar/fabcar-client/index.html` on VS Code and start the live server. You will see a button at the bottom called "Go Live". Click on it.
