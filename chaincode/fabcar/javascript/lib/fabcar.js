@@ -169,6 +169,14 @@ class FabCar extends Contract {
         }
 
         const company = JSON.parse(companyAsBytes.toString());
+
+        // Check if the company is banned
+        if (company.status === "banned") {
+            throw new Error(
+                `Company with ID ${companyId} is banned and cannot be updated`
+            );
+        }
+
         company.name = newName;
         company.companyType = newCompanyType;
         company.employeeCount = newEmployeeCount;
@@ -179,6 +187,102 @@ class FabCar extends Contract {
             Buffer.from(JSON.stringify(company))
         );
         console.info("============= END : updateCompany ===========");
+    }
+
+    async updateCashOutFlowAndReputation(
+        ctx,
+        companyId,
+        newPredeterminedCashOutFlow,
+        newCompanyReputation,
+        adminNID
+    ) {
+        console.info(
+            "============= START : updateCashOutFlowAndReputation ==========="
+        );
+
+        const companyAsBytes = await ctx.stub.getState(companyId); // get the company from chaincode state
+        if (!companyAsBytes || companyAsBytes.length === 0) {
+            throw new Error(`${companyId} does not exist`);
+        }
+
+        const company = JSON.parse(companyAsBytes.toString());
+
+        // Check if the admin is authorized to update
+        if (!company.admins.includes(adminNID)) {
+            throw new Error(
+                `Admin with NID ${adminNID} is not authorized to update this company`
+            );
+        }
+
+        // Check if the company is banned
+        if (company.companyReputation === "banned") {
+            throw new Error(
+                `Company with ID ${companyId} is banned and cannot be updated`
+            );
+        }
+
+        company.predeterminedCashOutFlow = newPredeterminedCashOutFlow;
+        company.companyReputation = newCompanyReputation;
+
+        await ctx.stub.putState(
+            companyId,
+            Buffer.from(JSON.stringify(company))
+        );
+        console.info(
+            "============= END : updateCashOutFlowAndReputation ==========="
+        );
+    }
+
+    async updateCompanyFinancials(
+        ctx,
+        companyId,
+        newCashInFlow,
+        newCashOutFlow,
+        adminNID
+    ) {
+        console.info(
+            "============= START : updateCompanyFinancials ==========="
+        );
+
+        const companyAsBytes = await ctx.stub.getState(companyId); // get the company from chaincode state
+        if (!companyAsBytes || companyAsBytes.length === 0) {
+            throw new Error(`${companyId} does not exist`);
+        }
+
+        const company = JSON.parse(companyAsBytes.toString());
+
+        // Check if the admin is authorized to update
+        if (!company.admins.includes(adminNID)) {
+            throw new Error(
+                `Admin with NID ${adminNID} is not authorized to update this company`
+            );
+        }
+
+        // Check if the company is banned
+        if (company.companyReputation === "banned") {
+            throw new Error(
+                `Company with ID ${companyId} is banned and cannot be updated`
+            );
+        }
+
+        // Check if the cash outflow is more than the predetermined amount
+        if (
+            company.companyReputation === "poor" &&
+            newCashOutFlow > company.predeterminedCashOutFlow
+        ) {
+            throw new Error(
+                `Cash outflow cannot be more than the predetermined amount for companies with poor reputation`
+            );
+        }
+
+        company.cashInFlow = newCashInFlow;
+        company.cashOutFlow = newCashOutFlow;
+
+        await ctx.stub.putState(
+            companyId,
+            Buffer.from(JSON.stringify(company))
+        );
+        console.info("============= END : updateCompanyFinancials ===========");
     }
 }
 
