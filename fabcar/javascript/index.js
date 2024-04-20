@@ -6,7 +6,7 @@ const express = require("express");
 const cors = require("cors");
 const query = require("./query");
 const createCompany = require("./createCompany");
-const changeOwner = require("./changeOwner");
+const updateCompany = require("./updateCompany");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -24,37 +24,6 @@ app.use(
     })
 );
 
-// get all car
-app.get("/get-car", function (req, res) {
-    query
-        .main(req.query)
-        .then((result) => {
-            const parsedData = JSON.parse(result);
-            let carList;
-
-            // if user search car
-            if (req.query.key) {
-                carList = [
-                    {
-                        Key: req.query.key,
-                        Record: {
-                            ...parsedData,
-                        },
-                    },
-                ];
-                res.send(carList);
-                return;
-            }
-
-            carList = parsedData;
-            res.send(carList);
-        })
-        .catch((err) => {
-            console.error({ err });
-            res.send("FAILED TO GET DATA!");
-        });
-});
-
 // get all companies
 app.get("/get-company", function (req, res) {
     query
@@ -70,7 +39,7 @@ app.get("/get-company", function (req, res) {
         });
 });
 
-// create a new car
+// create a new company
 app.post("/create", function (req, res) {
     createCompany
         .main(req.body)
@@ -83,16 +52,42 @@ app.post("/create", function (req, res) {
         });
 });
 
-// change car owner
+// update company information
 app.post("/update", function (req, res) {
-    changeOwner
-        .main(req.body)
+    const {
+        companyId,
+        newName,
+        newCompanyType,
+        newEmployeeCount,
+        newCountryOfOrigin,
+    } = req.body;
+
+    if (
+        !companyId ||
+        !newName ||
+        !newCompanyType ||
+        !newEmployeeCount ||
+        !newCountryOfOrigin
+    ) {
+        return res.status(400).send({ message: "Missing required fields" });
+    }
+
+    console.log("I am inside update company information");
+
+    updateCompany
+        .main({
+            companyId,
+            newName,
+            newCompanyType,
+            newEmployeeCount,
+            newCountryOfOrigin,
+        })
         .then((result) => {
             res.send({ message: "Updated successfully" });
         })
         .catch((err) => {
             console.error({ err });
-            res.send("FAILED TO LOAD DATA!");
+            res.status(500).send("FAILED TO UPDATE DATA!");
         });
 });
 

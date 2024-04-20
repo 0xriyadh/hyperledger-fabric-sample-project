@@ -56,6 +56,41 @@
         </div>
 
         <div class="text-center form-container">
+            <h3>Update Company</h3>
+            <form class="form" id="updateForm" action="" name="createCompany">
+                <div>
+                    <label for="">ID/Key</label>
+                    <input name="companyId" />
+                </div>
+
+                <div>
+                    <label for="">Name</label>
+                    <input name="newName" />
+                </div>
+
+                <div>
+                    <label for="">Company Type</label>
+                    <select name="newCompanyType">
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                        <option value="ngo">NGO</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="">Employee Count</label>
+                    <input name="newEmployeeCount" type="number" />
+                </div>
+                <div>
+                    <label for="">Country of Origin</label>
+                    <input name="newCountryOfOrigin" />
+                </div>
+                <div>
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- <div class="text-center form-container">
             <h3>Update Owner</h3>
             <form id="updateForm" action="" name="updateOwner">
                 <div>
@@ -72,7 +107,7 @@
                     <button type="submit">Update</button>
                 </div>
             </form>
-        </div>
+        </div> -->
 
         <script>
             // CREATING NEW COMPANY
@@ -113,6 +148,26 @@
                 event.preventDefault();
                 const bodyParam = new URLSearchParams(new FormData(updateForm));
 
+                // Ensure cashInflow, cashOutFlow, and companyReputation are not updated
+                bodyParam.delete("cashInflow");
+                bodyParam.delete("cashOutFlow");
+                bodyParam.delete("companyReputation");
+
+                // Check if all required fields are filled
+                if (
+                    !bodyParam.has("companyId") ||
+                    !bodyParam.has("newName") ||
+                    !bodyParam.has("newCompanyType") ||
+                    !bodyParam.has("newEmployeeCount") ||
+                    !bodyParam.has("newCountryOfOrigin")
+                ) {
+                    alert("Please fill all required fields");
+                    console.log("bodyParam", bodyParam);
+                    return;
+                }
+
+                console.log("bodyParam", bodyParam);
+
                 //CALLING UPDATE API
                 fetch("http://localhost:3000/update", {
                     method: "POST",
@@ -121,6 +176,7 @@
                     .then((res) => {
                         if (res.status !== 200) {
                             alert("Unable to update");
+                            console.error({ res });
                             return;
                         }
                         return res.json();

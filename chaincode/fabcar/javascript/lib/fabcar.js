@@ -154,19 +154,33 @@ class FabCar extends Contract {
         return JSON.stringify(allResults);
     }
 
-    // async changeCarOwner(ctx, carNumber, newOwner) {
-    //     console.info("============= START : changeCarOwner ===========");
+    async updateCompany(
+        ctx,
+        companyId,
+        newName,
+        newCompanyType,
+        newEmployeeCount,
+        newCountryOfOrigin
+    ) {
+        console.info("============= START : updateCompany ===========");
 
-    //     const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
-    //     if (!carAsBytes || carAsBytes.length === 0) {
-    //         throw new Error(`${carNumber} does not exist`);
-    //     }
-    //     const car = JSON.parse(carAsBytes.toString());
-    //     car.owner = newOwner;
+        const companyAsBytes = await ctx.stub.getState(companyId); // get the company from chaincode state
+        if (!companyAsBytes || companyAsBytes.length === 0) {
+            throw new Error(`${companyId} does not exist`);
+        }
 
-    //     await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-    //     console.info("============= END : changeCarOwner ===========");
-    // }
+        const company = JSON.parse(companyAsBytes.toString());
+        company.name = newName;
+        company.companyType = newCompanyType;
+        company.employeeCount = newEmployeeCount;
+        company.countryOfOrigin = newCountryOfOrigin;
+
+        await ctx.stub.putState(
+            companyId,
+            Buffer.from(JSON.stringify(company))
+        );
+        console.info("============= END : updateCompany ===========");
+    }
 }
 
 module.exports = FabCar;
