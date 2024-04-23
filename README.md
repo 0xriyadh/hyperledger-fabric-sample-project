@@ -16,7 +16,11 @@ cd hyperledger-fabric-sample-project
 ```bash
 make setup
 ```
-5. Install [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension, if you haven't already.
+5. Run the following command to start the network.
+```bash
+make start
+```
+6. Install [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension, if you haven't already.
    ![image](https://github.com/mahadihassanriyadh/hyperledger-fabric-sample-project/assets/77486566/34b7044b-a701-4198-95d4-0e1f54899136)
 7. Open the file `./fabcar/fabcar-client/index.html` on VS Code and start the live server. You will see a button at the bottom called "Go Live". Click on it.
    ![image](https://github.com/mahadihassanriyadh/hyperledger-fabric-sample-project/assets/77486566/3305f0b7-4739-4f06-9d03-0d2ec371fa59)
